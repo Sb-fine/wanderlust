@@ -9,8 +9,9 @@ jobs:
   semgrep:
     runs-on: label-1
     steps:
-      - uses: actions/checkout@v3
-      - name: semgrep SAST
       - using: 'node20'
+     # - uses: actions/checkout@v3
+      - name: semgrep SAST
+    
         run: cd /mnt/project/wanderlust
              semgrep ci
