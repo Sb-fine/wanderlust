@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - saurabh
+  pull_request:
+    branches:
+      - saurabh
+jobs:
+  build:
+    runs-on: 
+    steps:
+      - uses: actions/checkout@v3
+      - name: semgrep SAST
+        run: semgrep ci
