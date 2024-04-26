@@ -11,5 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: semgrep SAST
+      - using: 'node20'
         run: cd /mnt/project/wanderlust
              semgrep ci
