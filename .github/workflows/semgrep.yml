@@ -6,7 +6,7 @@ on:
     branches:
       - saurabh
 jobs:
-  build:
+  semgrep SAST:
     runs-on: label-1
     steps:
       - uses: actions/checkout@v3
