@@ -30,4 +30,4 @@ jobs:
           #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
     
          # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-         #solved docker socket coonection error..
+         #solved docker socket coonection error
