@@ -28,7 +28,7 @@ jobs:
 
     - name: run the containers on deployment server
       run: |
-          sudo ssh root@54.234.121.23 'cd /opt/wanderlust/ && sudo docker-compose up -d --build'
+          sudo ssh root@54.234.121.23 'cd /opt/wanderlust/ && pwd'
           
     # - name: install frontend dependencies
     #   run: cd frontend && npm i 
