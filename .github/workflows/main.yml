@@ -10,7 +10,7 @@ jobs:
 
   Runtime-Setup: 
 
-    runs-on: self-hosted #runner
+    runs-on: groot #runner
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
@@ -22,9 +22,6 @@ jobs:
         git branch -a
         git checkout devsecops
         ls -a
-
-    # - name: copy project to the deployment server
-    #   run: sudo scp -r /home/ubuntu/actions-runner/_work/wanderlust/wanderlust root@54.234.121.23:/opt/
 
     - name: run the containers on deployment server
       run: |
