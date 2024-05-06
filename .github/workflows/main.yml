@@ -10,7 +10,7 @@ jobs:
 
   Runtime-Setup: 
 
-    runs-on: label-2 #runner
+    runs-on: self-hosted #runner
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
