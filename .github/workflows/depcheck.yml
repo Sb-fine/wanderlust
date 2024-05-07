@@ -21,7 +21,7 @@ jobs:
         id: Depcheck
         with:
           project: 'wanderlust'
-          path: '/mnt/actions-runner/_work/wanderlust/wanderlust'
+          path: '/wanderlust/wanderlust'
           format: 'HTML'
           # out: 'reports' # this is the default, no need to specify unless you wish to override it
           # args: >
