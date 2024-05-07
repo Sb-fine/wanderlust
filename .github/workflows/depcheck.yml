@@ -10,6 +10,8 @@ jobs:
     runs-on: label-1
     name: depecheck_test
     steps:
+      - name: remove old repo
+        run: rm -rf wanderlust 
       - name: Checkout
         uses: actions/checkout@v2
       - name: install dependencies
