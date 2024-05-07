@@ -7,7 +7,7 @@ on:
       - saurabh
 jobs:
   depchecktest:
-    runs-on: ubuntu-latest
+    runs-on: label-1
     name: depecheck_test
     steps:
       - name: Checkout
@@ -15,7 +15,7 @@ jobs:
       - name: install dependencies
         run: sudo npm install
       - name: Depcheck
-        uses: dependency-check/Dependency-Check_Action@saurabh
+        uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
         with:
           project: 'wanderlust'
@@ -26,7 +26,7 @@ jobs:
           #   --failOnCVSS 7
           #   --enableRetired
       - name: Upload Test results
-        uses: actions/upload-artifact@saurabh
+        uses: actions/upload-artifact@master
         with:
            name: Depcheck report
            path: ${{github.workspace}}/reports
