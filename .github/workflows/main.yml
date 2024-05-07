@@ -10,7 +10,7 @@ jobs:
 
   Runtime-Setup: 
 
-    runs-on: groot #runner
+    runs-on: label-2 #groot #runner
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
@@ -25,22 +25,19 @@ jobs:
 
     - name: run the containers on deployment server
       run: |
-          docker-compose up -d
-          
-          # sudo ssh root@54.234.121.23 'cd /opt/wanderlust && 
-          # pwd && ls && docker-compose up -d --build'
+          docker-compose down &&
+          docker-compose -d --build
           
     # - name: install frontend dependencies
     #   run: cd frontend && npm i 
-      
+    
     # - name: copy uri to .env #change the path
     #   run: cp /home/fs-lp-56/actions-runner/_work/wanderlust/wanderlust/backend/.env.sample .env.local
     
     # - name: start frontend
     #   run: |
     #       cd frontend && nohup npm run dev -- --host &
-
-
+    
     # - name: install backend dependencies
     #   run: cd backend && npm i 
       
