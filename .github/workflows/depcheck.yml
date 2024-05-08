@@ -16,8 +16,11 @@ jobs:
         #uses: actions/checkout@v3
       - name: install dependencies
         run: sudo npm install
-      - name: Depcheck
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/node_modules --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+      - name: Depcheck frontend
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/node_modules --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+      - name: Depcheck backend
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/node_modules --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
+        
         #uses: dependency-check/Dependency-Check_Action@main
         #id: Depcheck
         # with:
@@ -28,7 +31,7 @@ jobs:
           # args: >
           #   --failOnCVSS 7
           #   --enableRetired
-      - name: Upload Test results
+      - name: Upload Test results 
         uses: actions/upload-artifact@master
         with:
            name: Depcheck report
