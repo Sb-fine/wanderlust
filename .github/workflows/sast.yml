@@ -11,6 +11,7 @@ jobs:
     name: Scan ZAP website
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.1.0
+        uses: zaproxy/action-af@v0.1.0
         with:
           target: '18.234.58.230:5173'
+          #zaproxy/action-full-scan@v0.1.0
