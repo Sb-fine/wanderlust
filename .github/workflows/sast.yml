@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - saurabh
+  pull_request:
+    branches:
+      - saurabh
+jobs:
+  zap_scan:
+    runs-on: label-1
+    name: Scan ZAP website
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.1.0
+        with:
+          target: '18.234.58.230:5173'
