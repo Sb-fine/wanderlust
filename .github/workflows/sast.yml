@@ -10,10 +10,6 @@ jobs:
     runs-on: label-1
     name: Scan the webapplication
     steps:
-      # - name: Checkout
-      #   #uses: actions/checkout@v2
-      #   with:
-      #     ref: master
       - name: ZAP Scan
       - run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
         # uses: zaproxy/action-full-scan@v0.10.0
