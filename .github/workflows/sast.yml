@@ -17,8 +17,8 @@ jobs:
       - name: Upload Test results 
         uses: actions/upload-artifact@master
         with:
-           name: Depcheck report
-           path: ${{github.workspace}}/zap-report/report.xml
+           name: ZAP report
+           path: /mnt/actions-runner/_work/zap-report/report.xml
         
         # uses: zaproxy/action-full-scan@v0.10.0
         # with:
