@@ -13,7 +13,7 @@ jobs:
       - name: ZAP Scan
         run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
       - name: copy report to runner work space
-        run: cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
+        run: sudo cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
       - name: Upload Test results 
         uses: actions/upload-artifact@master
         with:
