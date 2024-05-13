@@ -28,7 +28,7 @@ jobs:
           sudo docker-compose down
           sudo docker-compose up -d --build
           sudo docker ps
-          sudo docker exec -it mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+          sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
           
     # - name: install frontend dependencies
     #   run: cd frontend && npm i 
