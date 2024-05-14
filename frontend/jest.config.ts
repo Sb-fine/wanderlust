@@ -17,7 +17,7 @@ export default {
                 metaObjectReplacement: {
                   env: {
                     // Replicate as .env.local
-                    VITE_API_PATH: 'http://34.229.46.124:5000',
+                    VITE_API_PATH: 'http://3.91.40.77:5000',
                   },
                 },
               },
