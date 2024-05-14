@@ -8,6 +8,22 @@ on:
 
 jobs:
 
+  Docker_build: 
+
+    runs-on: label-2 #groot #runner
+    steps:
+    - uses: actions/checkout@v3
+    - name: Remove older images
+    - run: |
+        sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest mongo:latest
+    - name: Build Image
+    - run: |
+        cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+        sudo docker build -t wanderlust_backend:latest .
+        cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+        sudo docker build -t wanderlust_frontend:latest .
+        sudo docker images
+
   Runtime-Setup: 
 
     runs-on: label-2 #groot #runner
