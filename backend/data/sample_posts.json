@@ -3,14 +3,14 @@
     "_id": {
       "$oid": "653441167c11e03b70e9161b"
     },
-    "authorName": "John Doe",
+    "authorName": "Sumit G.",
     "title": "A Journey Through the Marvelous Beaches of Maldives and a marvelous experience",
     "imageLink": "https://i.ibb.co/3z72vmc/clean-lake-mountains-range-trees-nature-4k.webp",
     "categories": ["Travel", "Beaches"],
     "description": "The Maldives is a tropical paradise known for its stunning beaches, crystal-clear waters, and vibrant marine life. In this journey, we explore the breathtaking beauty of the Maldives' beaches. From the white sands to the vibrant coral reefs, there's something for every traveler.The Maldives is a tropical paradise known for its stunning beaches, crystal-clear waters, and vibrant marine life. In this journey, we explore the breathtaking beauty of the Maldives' beaches. From the white sands to the vibrant coral reefs, there's something for every traveler.",
     "isFeaturedPost": true,
     "timeOfPost": {
-      "$date": "2023-11-24T14:33:21.700Z"
+      "$date": "2024-05-14T14:33:21.700Z"
     }
   },
   {
@@ -59,14 +59,14 @@
     "_id": {
       "$oid": "653441167c11e03b70e9161f"
     },
-    "authorName": "Ella Davis",
+    "authorName": "Saurabh B.",
     "title": "Serenity in Nature: Finding Peace Amidst Scenic Beauty",
     "imageLink": "https://i.ibb.co/d0g42nr/FPO-BOR-100-800x600.webp",
     "categories": ["Nature", "Scenic", "Tranquil"],
     "description": "Find solace and serenity in the heart of nature's most scenic landscapes. This journey takes you to tranquil forests, serene lakes, and picturesque countryside. Immerse yourself in the beauty of the natural world and experience true peace.",
     "isFeaturedPost": true,
     "timeOfPost": {
-      "$date": "2023-08-22T14:33:21.700Z"
+      "$date": "2024-05-13T14:33:21.700Z"
     }
   },
   {
