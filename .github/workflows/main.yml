@@ -2,9 +2,10 @@ name: deployment
 
 on:
   push:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
+    
   pull_request:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
 
 jobs:
 
@@ -13,6 +14,8 @@ jobs:
     runs-on: label-2 #groot #runner
     steps:
     - uses: actions/checkout@v3
+    - name: Print the workflow run ID
+      run: echo "Workflow run ID:${{ github.run_id }}"
     - name: Remove older images
       run: |
         sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest
