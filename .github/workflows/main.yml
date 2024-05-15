@@ -28,7 +28,7 @@ jobs:
   #       sudo docker build -t wanderlust_frontend:latest .
         
   build_push_image:
-    runs-on: label-2 #runner
+    runs-on: groot #runner
 
     steps:
       - name: Checkout repository
