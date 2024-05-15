@@ -25,11 +25,11 @@ jobs:
         uses: actions/upload-artifact@master
         with:
            name: frontend report
-           path: ${{github.workspace}}/trivy-report/trivyreportfront.txt
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
       - name: Upload Test results-2
         uses: actions/upload-artifact@master
         with:
            name: backend report
-           path: ${{github.workspace}}/trivy-report/trivyreportfront.txt
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
            
       
