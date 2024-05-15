@@ -7,7 +7,7 @@ on:
       - saurabh
 jobs:
   depchecktest:
-    runs-on: label-1
+    runs-on: label-2
     name: image scanning
     steps:
   
