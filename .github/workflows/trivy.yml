@@ -14,12 +14,12 @@ jobs:
       - name: frontend
         run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
       - name: copying report to runner workspace  
-        run:  cp /mnt/report/trivyreportfront.txt /actions-runner/_work/trivy-report
+        run: sudo cp /mnt/report/trivyreportfront.txt /actions-runner/_work/trivy-report
 
       - name: backend
         run: trivy image sumitramchandra/wanderlust_backend --output /mnt/report/trivyreportbackend.txt
       - name: copying report to runner workspace  
-        run: cp /mnt/report/trivyreportfront.txt /actions-runner/_work/trivy-report
+        run: sudo cp /mnt/report/trivyreportfront.txt /actions-runner/_work/trivy-report
                    
       - name: Upload Test results-1
         uses: actions/upload-artifact@master
