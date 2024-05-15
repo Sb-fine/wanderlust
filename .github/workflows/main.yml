@@ -42,7 +42,7 @@ jobs:
           
       - name: Build Image
         run: |
-          sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+          docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
           
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
           sudo docker build -t wanderlust_backend:latest .
