@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Remove older images
       run: |
-        sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest mongo:latest
+        sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest
     - name: Build Image
       run: |
         cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
