@@ -47,7 +47,7 @@ jobs:
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
           sudo docker build -t wanderlust_backend:latest .
           sudo docker tag wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+          sudo docker push sumitramchandra/wanderlust_backend:latest
           
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
           sudo docker build -t wanderlust_frontend:latest .
