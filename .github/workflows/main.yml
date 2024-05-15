@@ -2,29 +2,76 @@ name: deployment
 
 on:
   push:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
+    
   pull_request:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
 
 jobs:
 
-  Docker_build: 
+  # Docker_build: 
 
-    runs-on: label-2 #groot #runner
+  #   runs-on: label-2 #groot #runner
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Print the workflow run ID
+  #     run: echo "Workflow run ID:${{ github.run_id }}"
+  #   # - name: Remove older images
+  #   #   run: |
+  #   #     sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest
+        
+  #   - name: Build Image
+  #     run: |
+  #       cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+  #       sudo docker build -t wanderlust_backend:latest .
+  #       cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+  #       sudo docker build -t wanderlust_frontend:latest .
+        
+  build_push_image:
+    runs-on: label-2 #runner
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Remove older images
-      run: |
-        sudo docker rmi -f wanderlust_backend:latest wanderlust_frontend:latest
-    - name: Build Image
-      run: |
-        cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-        sudo docker build -t wanderlust_backend:latest .
-        cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-        sudo docker build -t wanderlust_frontend:latest .
-        sudo docker images
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  Runtime-Setup: 
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      #     password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          
+      - name: Build Image
+        run: |
+          docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+          
+          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+          sudo docker build -t wanderlust_backend:latest .
+          sudo docker tag wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+          sudo docker push sumitramchandra/wanderlust_backend:latest
+          
+          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+          sudo docker build -t wanderlust_frontend:latest .
+          sudo docker tag wanderlust_frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          
+
+      # - name: Build and push frontend Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     file: /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+
+      # - name: Build and push backend Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     file: /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+
+  Deployment: 
 
     runs-on: label-2 #groot #runner
     steps:
