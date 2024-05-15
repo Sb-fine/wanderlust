@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend/Dockerfile
+          file: /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
 
@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend/Dockerfile
+          file: /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
 
