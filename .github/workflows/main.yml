@@ -2,10 +2,10 @@ name: deployment
 
 on:
   push:
-    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
+    branches: [ "devsecops" ]
     
   pull_request:
-    branches: [ "CU-86cvcxan9_build-Docker-images_Sumit" ]
+    branches: [ "devsecops" ]
 
 jobs:
 
