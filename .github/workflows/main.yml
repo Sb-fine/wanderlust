@@ -47,9 +47,10 @@ jobs:
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
           
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t wanderlust_backend:${IMAGE_TAG} .
-          sudo docker tag wanderlust_backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
-          sudo docker push sumitramchandra/wanderlust_backend:${IMAGE_TAG}
+          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG} .
+          
+          # sudo docker tag wanderlust_backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
           
           # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
           # sudo docker build -t wanderlust_frontend:latest .
