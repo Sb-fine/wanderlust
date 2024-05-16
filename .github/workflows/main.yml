@@ -23,7 +23,9 @@ jobs:
       #   run: |
       #     export IMAGE_TAG=${{ github.run_id }}
       #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-        
+      - name: remove older images Image
+        run: |
+          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
       - name: Build Image
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
