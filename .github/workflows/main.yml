@@ -103,6 +103,38 @@ jobs:
           # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG} .
           # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
 
+##Dependency check:
+  depchecktest:
+    runs-on: label-1
+    needs: build_push_image
+    name: depecheck_test
+    steps:
+      # - name: remove old repo
+      #   run: rm -rf wanderlust 
+      #- name: Checkout
+        #uses: actions/checkout@v3
+      - name: install dependencies
+        run: sudo npm install
+      - name: Depcheck frontend
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+      # - name: Depcheck backend
+      #   run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
+        
+        #uses: dependency-check/Dependency-Check_Action@main
+        #id: Depcheck
+        # with:
+        #   project: 'wanderlust'
+        #   path: '.'
+        #   format: 'HTML'
+          # out: 'reports' # this is the default, no need to specify unless you wish to override it
+          # args: >
+          #   --failOnCVSS 7
+          #   --enableRetired
+      - name: Upload Test results 
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/dependency-check-report.html
 
 ##Deployment through docker compose##
   Deployment: 
