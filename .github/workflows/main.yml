@@ -64,10 +64,38 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
+
+##Static_Application_Security_Test##
+  semgrep-SAST:
+    # User definable name of this GitHub Actions job.
+    name: semgrep/ci
+    
+    runs-on: label-1
+    env:
+       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+    container:
+      # A Docker image with Semgrep installed. Do not change this.
+      image: semgrep/semgrep
+
+    # Skip any PR created by dependabot to avoid permission issues:
+    #if: (github.actor != 'dependabot[bot]')
+
+    steps:
+      # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
+      - uses: actions/checkout@v4
+      # Run the "semgrep ci" command on the command line of the docker image.
+      - run: semgrep ci --json --json-output=semgrep.json #semgrep ci
+        #env:
+          #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
+    
+         # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+
 ##build and push docker images##
   build_push_image:
     runs-on: label-2 #runner
-    needs: analyze_CQ
+    needs: [analyze_CQ, semgrep-SAST]
     # env:
     #   IMAGE_TAG: ${{ github.run_id }}
 
