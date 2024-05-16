@@ -41,18 +41,20 @@ jobs:
       #     password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           
       - name: Build Image
+        env:
+          IMAGE_TAG: $(date +"%Y%m%d")
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
           
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t wanderlust_backend:latest .
-          sudo docker tag wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
-          sudo docker push sumitramchandra/wanderlust_backend:latest
+          sudo docker build -t wanderlust_backend:${IMAGE_TAG} .
+          sudo docker tag wanderlust_backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
+          sudo docker push sumitramchandra/wanderlust_backend:${IMAGE_TAG}
           
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t wanderlust_frontend:latest .
-          sudo docker tag wanderlust_frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+          # sudo docker build -t wanderlust_frontend:latest .
+          # sudo docker tag wanderlust_frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
           
 
       # - name: Build and push frontend Docker image
