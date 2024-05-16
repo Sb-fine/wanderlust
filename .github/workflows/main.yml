@@ -136,6 +136,34 @@ jobs:
            name: Depcheck report
            path: ${{github.workspace}}/dependency-check-report.html
 
+## Docker Image Scanning through Trivy##
+  Image_Scan_with_trivy:
+      runs-on: label-2
+      needs: build_push_image
+      name: image scanning
+      steps:
+  
+      - name: frontend
+        run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
+      - name: copying report to runner workspace  
+        run: sudo cp /mnt/report/trivyreportfront.txt /home/ubuntu/actions-runner/_work/trivy-report
+
+      - name: backend
+        run: trivy image sumitramchandra/wanderlust_backend --output /mnt/report/trivyreportbackend.txt
+      - name: copying report to runner workspace  
+        run: sudo cp /mnt/report/trivyreportbackend.txt /home/ubuntu/actions-runner/_work/trivy-report
+                   
+      - name: Upload Test results-1
+        uses: actions/upload-artifact@master
+        with:
+           name: frontend report
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
+      - name: Upload Test results-2
+        uses: actions/upload-artifact@master
+        with:
+           name: backend report
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
+
 ##Deployment through docker compose##
   Deployment: 
     runs-on: label-2 #groot #runner
@@ -159,6 +187,21 @@ jobs:
           sudo docker ps
           sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
 
+##DAST##  
+  DAST_Scan:
+    runs-on: label-1
+    needs: Deployment
+    name: Scan the webapplication
+    steps:
+      - name: ZAP Scan
+        run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
+      - name: copy report to runner work space
+        run: sudo cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
+      - name: Upload Test results 
+        uses: actions/upload-artifact@master
+        with:
+           name: ZAP report
+           path: /mnt/actions-runner/_work/zap-report/report.xml
       
           
     # - name: install frontend dependencies
