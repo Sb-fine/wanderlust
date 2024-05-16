@@ -167,7 +167,7 @@ jobs:
 ##Deployment through docker compose##
   Deployment: 
     runs-on: label-2 #groot #runner
-    needs: build_push_image
+    needs: [depchecktest, Image_Scan_with_trivy] 
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
