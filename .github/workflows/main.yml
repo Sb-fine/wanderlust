@@ -12,31 +12,38 @@ jobs:
   build_push_image:
     runs-on: label-2 #runner
 
-    env:
-      IMAGE_TAG: ${{ github.run_id }}
+    # env:
+    #   IMAGE_TAG: ${{ github.run_id }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-      - name: Set IMAGE_TAG variable
-        run: |
-          export IMAGE_TAG=${{ github.run_id }}
-          echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+      # - name: Set IMAGE_TAG variable
+      #   run: |
+      #     export IMAGE_TAG=${{ github.run_id }}
+      #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
         
       - name: Build Image
-      #   env:
-      #     IMAGE_TAG: ${{ github.run_id }}
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
-          
+
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG} .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
+          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
           
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG} .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
+          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+
+          
+          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG} .
+          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
+          
+          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG} .
+          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
 
   Deployment: 
 
@@ -46,11 +53,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Use Node.js
       uses: actions/setup-node@v3
-
-    - name: Set IMAGE_TAG variable
-      run: |
-        export IMAGE_TAG=${{ github.run_id }}
-        echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
 
     - name: print the directory path and file content
       run: |
