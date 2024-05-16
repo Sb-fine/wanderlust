@@ -47,6 +47,11 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3
 
+    - name: Set IMAGE_TAG variable
+      run: |
+        export IMAGE_TAG=${{ github.run_id }}
+        echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+
     - name: print the directory path and file content
       run: |
         pwd
