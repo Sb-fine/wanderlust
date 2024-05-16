@@ -62,3 +62,8 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+    - name: Upload CodeQL Analysis Report
+      uses: actions/upload-artifact@v2
+      with:
+          name: codeql-analysis-report
+          path: ${{ github.workspace }}/codeql-analysis-results
