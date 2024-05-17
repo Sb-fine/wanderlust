@@ -125,24 +125,34 @@ jobs:
           # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
 
 ##Dependency check:
-  Depchecktest:
+  
+  depchecktest:
     runs-on: label-1
-    needs: build_push_image
-    name: Dependency_Check
+    name: depecheck_test
     steps:
       # - name: remove old repo
       #   run: rm -rf wanderlust 
+      #- name: Checkout
+        #uses: actions/checkout@v3
       - name: install dependencies
         run: sudo npm install
       - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
-      - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
-      - name: Upload Test results 
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/depcheckfront.html  --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+      - name: Depcheck backend
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/backend/depcheckback.html --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
+        
+        
+      - name: Upload Test results frontend 
         uses: actions/upload-artifact@master
         with:
-           name: Depcheck report
-           path: ${{github.workspace}}/dependency-check-report.html
+           name: Depcheck report front
+           path: ${{github.workspace}}/frontend/depcheckfront.html  #dependency-check-report.html
+           
+      - name: Upload Test results backend
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report back
+           path: ${{github.workspace}}/backend/depcheckback.html  #dependency-check-report.html     
 
 ## Docker Image Scanning through Trivy##
   Image_Scanning_with_trivy:
