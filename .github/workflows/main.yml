@@ -157,9 +157,8 @@ jobs:
 ## Docker Image Scanning through Trivy##
   Image_Scanning_with_trivy:
       runs-on: label-2
-      needs: build_push_image
-      name: Scan Images with Trivy
-      steps:
+    name: image scanning
+    steps:
   
       - name: frontend
         run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
@@ -174,15 +173,14 @@ jobs:
       - name: Upload Test results-1
         uses: actions/upload-artifact@master
         with:
-           name: frontend report
+           name: image frontend report
            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
       - name: Upload Test results-2
         uses: actions/upload-artifact@master
         with:
-           name: backend report
-           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
-
-##Deployment through docker compose##
+           name: image backend report
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportbackend.txt
+           
   Deployment: 
     runs-on: label-2 #groot #runner
     needs: [Depchecktest, Image_Scanning_with_trivy] 
