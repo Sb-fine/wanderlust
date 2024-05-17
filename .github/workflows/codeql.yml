@@ -1,11 +1,11 @@
 
-name: "CodeQL"
+# name: "CodeQL"
 
-on:
-  push:
-    branches: [ "saurabh" ]
-  pull_request:
-    branches: [ "saurabh" ]
+# on:
+#   push:
+#     branches: [ "saurabh" ]
+#   pull_request:
+#     branches: [ "saurabh" ]
 
 jobs:
   analyze:
@@ -43,12 +43,7 @@ jobs:
         build-mode: ${{ matrix.build-mode }}
         
 
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+
     - if: matrix.build-mode == 'manual'
       run: |
         echo 'If you are using a "manual" build mode for one or more of the' \
