@@ -25,11 +25,11 @@ jobs:
       - name: Upload Test results frontend 
         uses: actions/upload-artifact@master
         with:
-           name: Depcheck report
+           name: Depcheck report front
            path: ${{github.workspace}}/frontend/depcheckfront.html  #dependency-check-report.html
            
       - name: Upload Test results backend
         uses: actions/upload-artifact@master
         with:
-           name: Depcheck report
+           name: Depcheck report back
            path: ${{github.workspace}}/backend/depcheckback.html  #dependency-check-report.html     
