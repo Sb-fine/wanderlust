@@ -1,10 +1,10 @@
-# on:
-#   push:
-#     branches:
-#       - saurabh
-#   pull_request:
-#     branches:
-#       - saurabh
+on:
+  push:
+    branches:
+      - saurabh
+  pull_request:
+    branches:
+      - saurabh
 jobs:
   depchecktest:
     runs-on: label-2
@@ -30,6 +30,6 @@ jobs:
         uses: actions/upload-artifact@master
         with:
            name: backend report
-           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
+           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportbackend.txt
            
       
