@@ -93,23 +93,39 @@ jobs:
     #   IMAGE_TAG: ${{ github.run_id }}
 
     steps:
-      - name: Checkout repository
+    
+      - name: Checkout code
         uses: actions/checkout@v2
-        
-      # - name: Set IMAGE_TAG variable
-      #   run: |
-      #     export IMAGE_TAG=${{ github.run_id }}
-      #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-      # - name: remove older images
-      #   run: |
-      #     sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
-      - name: Build Image
-        run: |
-          docker login -u "${{ secrets.CR_USER }}" -p "${{ secrets.CR_PAT }}" ghcr.io
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u "${{ secrets.CR_USER }}" --password-stdin
+
+      - name: Build and Push Docker image
+        run: |
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest .
-          sudo docker push ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest
+          docker build -t ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest .
+          docker push ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest
+    
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
+        
+      # # - name: Set IMAGE_TAG variable
+      # #   run: |
+      # #     export IMAGE_TAG=${{ github.run_id }}
+      # #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+      # # - name: remove older images
+      # #   run: |
+      # #     sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+      # - name: Build Image
+      #   run: |
+      #     docker login -u "${{ secrets.CR_USER }}" -p "${{ secrets.CR_PAT }}" ghcr.io
+
+      #     cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+      #     sudo docker build -t ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest .
+      #     sudo docker push ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest
           
           # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
           # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
