@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  analyze_CQ:
+  Analyze_CQ:
     name: Analyze (${{ matrix.language }})
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     runs-on: ubuntu-latest #instance
@@ -59,9 +59,9 @@ jobs:
 
 
 ##Static_Application_Security_Test##
-  semgrep-SAST:
+  Semgrep-SAST:
     # User definable name of this GitHub Actions job.
-    name: semgrep/ci
+    name: Semgrep-SAST
     
     runs-on: label-1
     env:
@@ -88,7 +88,7 @@ jobs:
 ##build and push docker images##
   build_push_image:
     runs-on: label-2 #runner
-    needs: [analyze_CQ, semgrep-SAST]
+    needs: [Analyze_CQ, Semgrep-SAST]
     # env:
     #   IMAGE_TAG: ${{ github.run_id }}
 
@@ -100,7 +100,7 @@ jobs:
       #   run: |
       #     export IMAGE_TAG=${{ github.run_id }}
       #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-      - name: remove older images Image
+      - name: remove older images
         run: |
           sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
       - name: Build Image
@@ -125,10 +125,10 @@ jobs:
           # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
 
 ##Dependency check:
-  depchecktest:
+  Depchecktest:
     runs-on: label-1
     needs: build_push_image
-    name: depecheck_test
+    name: Dependency_Check
     steps:
       # - name: remove old repo
       #   run: rm -rf wanderlust 
@@ -145,10 +145,10 @@ jobs:
            path: ${{github.workspace}}/dependency-check-report.html
 
 ## Docker Image Scanning through Trivy##
-  Image_Scan_with_trivy:
+  Image_Scanning_with_trivy:
       runs-on: label-2
       needs: build_push_image
-      name: image scanning
+      name: Scan Images with Trivy
       steps:
   
       - name: frontend
@@ -175,7 +175,7 @@ jobs:
 ##Deployment through docker compose##
   Deployment: 
     runs-on: label-2 #groot #runner
-    needs: [depchecktest, Image_Scan_with_trivy] 
+    needs: [Depchecktest, Image_Scanning_with_trivy] 
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
@@ -199,7 +199,7 @@ jobs:
   DAST_Scan:
     runs-on: label-1
     needs: Deployment
-    name: Scan the webapplication
+    name: DAST
     steps:
       - name: ZAP Scan
         run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
