@@ -17,7 +17,7 @@ jobs:
       - name: install dependencies
         run: sudo npm install
       - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --output /frontend  --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --output /mnt/actions-runner/_work/wanderlust/wanderlust/frontend  --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
       - name: Depcheck backend
         run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
         
