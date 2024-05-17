@@ -2,93 +2,93 @@ name: deployment
 
 on:
   push:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvdu4pu_Github-Container-registry" ]
     
   pull_request:
-    branches: [ "devsecops" ]
+    branches: [ "CU-86cvdu4pu_Github-Container-registry" ]
 
 jobs:
 
-  Analyze_CQ:
-    name: Analyze (${{ matrix.language }})
-    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
-    runs-on: ubuntu-latest #instance
-    permissions:
-      # required for all workflows
-      security-events: write
-      # required to fetch internal or private CodeQL packs
-      packages: read
+#   Analyze_CQ:
+#     name: Analyze (${{ matrix.language }})
+#     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
+#     runs-on: ubuntu-latest #instance
+#     permissions:
+#       # required for all workflows
+#       security-events: write
+#       # required to fetch internal or private CodeQL packs
+#       packages: read
 
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
+#       # only required for workflows in private repositories
+#       actions: read
+#       contents: read
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: javascript-typescript
-          build-mode: none
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         include:
+#         - language: javascript-typescript
+#           build-mode: none
        
-        # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
+#         # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
         
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v4
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
+#     # Initializes the CodeQL tools for scanning.
+#     - name: Initialize CodeQL
+#       uses: github/codeql-action/init@v3
+#       with:
+#         languages: ${{ matrix.language }}
+#         build-mode: ${{ matrix.build-mode }}
         
-    - if: matrix.build-mode == 'manual'
-      run: |
-        echo 'If you are using a "manual" build mode for one or more of the' \
-          'languages you are analyzing, replace this with the commands to build' \
-          'your code, for example:'
-        echo '  make bootstrap'
-        echo '  make release'
-        exit 1
+#     - if: matrix.build-mode == 'manual'
+#       run: |
+#         echo 'If you are using a "manual" build mode for one or more of the' \
+#           'languages you are analyzing, replace this with the commands to build' \
+#           'your code, for example:'
+#         echo '  make bootstrap'
+#         echo '  make release'
+#         exit 1
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+#     - name: Perform CodeQL Analysis
+#       uses: github/codeql-action/analyze@v3
+#       with:
+#         category: "/language:${{matrix.language}}"
 
 
-##Static_Application_Security_Test##
-  Semgrep-SAST:
-    # User definable name of this GitHub Actions job.
-    name: Semgrep-SAST
+# ##Static_Application_Security_Test##
+#   Semgrep-SAST:
+#     # User definable name of this GitHub Actions job.
+#     name: Semgrep-SAST
     
-    runs-on: label-1
-    env:
-       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+#     runs-on: label-1
+#     env:
+#        SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
-    container:
-      # A Docker image with Semgrep installed. Do not change this.
-      image: semgrep/semgrep
+#     container:
+#       # A Docker image with Semgrep installed. Do not change this.
+#       image: semgrep/semgrep
 
-    # Skip any PR created by dependabot to avoid permission issues:
-    #if: (github.actor != 'dependabot[bot]')
+#     # Skip any PR created by dependabot to avoid permission issues:
+#     #if: (github.actor != 'dependabot[bot]')
 
-    steps:
-      # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
-      - uses: actions/checkout@v4
-      # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep ci --json --json-output=semgrep.json #semgrep ci
-        #env:
-          #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
+#     steps:
+#       # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
+#       - uses: actions/checkout@v4
+#       # Run the "semgrep ci" command on the command line of the docker image.
+#       - run: semgrep ci --json --json-output=semgrep.json #semgrep ci
+#         #env:
+#           #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
     
-         # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+#          # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
 
 ##build and push docker images##
   build_push_image:
     runs-on: label-2 #runner
-    needs: [Analyze_CQ, Semgrep-SAST]
+    # needs: [Analyze_CQ, Semgrep-SAST]
     # env:
     #   IMAGE_TAG: ${{ github.run_id }}
 
@@ -100,20 +100,20 @@ jobs:
       #   run: |
       #     export IMAGE_TAG=${{ github.run_id }}
       #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-      - name: remove older images
-        run: |
-          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+      # - name: remove older images
+      #   run: |
+      #     sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
       - name: Build Image
         run: |
-          docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+          docker login -u "${{ secrets.CR_USER }}" -p "${{ secrets.CR_PAT }}" ghcr.io
 
           cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+          sudo docker build -t ghcr.io/${{ secrets.CR_USER }}/wanderlust_backend:latest .
+          sudo docker push ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
           
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
+          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
 
           
           # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
@@ -125,91 +125,91 @@ jobs:
           # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
 
 ##Dependency check:
-  Depchecktest:
-    runs-on: label-1
-    needs: build_push_image
-    name: Dependency_Check
-    steps:
-      # - name: remove old repo
-      #   run: rm -rf wanderlust 
-      - name: install dependencies
-        run: sudo npm install
-      - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
-      - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
-      - name: Upload Test results 
-        uses: actions/upload-artifact@master
-        with:
-           name: Depcheck report
-           path: ${{github.workspace}}/dependency-check-report.html
+#   Depchecktest:
+#     runs-on: label-1
+#     needs: build_push_image
+#     name: Dependency_Check
+#     steps:
+#       # - name: remove old repo
+#       #   run: rm -rf wanderlust 
+#       - name: install dependencies
+#         run: sudo npm install
+#       - name: Depcheck frontend
+#         run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+#       - name: Depcheck frontend
+#         run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+#       - name: Upload Test results 
+#         uses: actions/upload-artifact@master
+#         with:
+#            name: Depcheck report
+#            path: ${{github.workspace}}/dependency-check-report.html
 
-## Docker Image Scanning through Trivy##
-  Image_Scanning_with_trivy:
-      runs-on: label-2
-      needs: build_push_image
-      name: Scan Images with Trivy
-      steps:
+# ## Docker Image Scanning through Trivy##
+#   Image_Scanning_with_trivy:
+#       runs-on: label-2
+#       needs: build_push_image
+#       name: Scan Images with Trivy
+#       steps:
   
-      - name: frontend
-        run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
-      - name: copying report to runner workspace  
-        run: sudo cp /mnt/report/trivyreportfront.txt /home/ubuntu/actions-runner/_work/trivy-report
+#       - name: frontend
+#         run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
+#       - name: copying report to runner workspace  
+#         run: sudo cp /mnt/report/trivyreportfront.txt /home/ubuntu/actions-runner/_work/trivy-report
 
-      - name: backend
-        run: trivy image sumitramchandra/wanderlust_backend --output /mnt/report/trivyreportbackend.txt
-      - name: copying report to runner workspace  
-        run: sudo cp /mnt/report/trivyreportbackend.txt /home/ubuntu/actions-runner/_work/trivy-report
+#       - name: backend
+#         run: trivy image sumitramchandra/wanderlust_backend --output /mnt/report/trivyreportbackend.txt
+#       - name: copying report to runner workspace  
+#         run: sudo cp /mnt/report/trivyreportbackend.txt /home/ubuntu/actions-runner/_work/trivy-report
                    
-      - name: Upload Test results-1
-        uses: actions/upload-artifact@master
-        with:
-           name: frontend report
-           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
-      - name: Upload Test results-2
-        uses: actions/upload-artifact@master
-        with:
-           name: backend report
-           path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
+#       - name: Upload Test results-1
+#         uses: actions/upload-artifact@master
+#         with:
+#            name: frontend report
+#            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
+#       - name: Upload Test results-2
+#         uses: actions/upload-artifact@master
+#         with:
+#            name: backend report
+#            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
 
-##Deployment through docker compose##
-  Deployment: 
-    runs-on: label-2 #groot #runner
-    needs: [Depchecktest, Image_Scanning_with_trivy] 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+# ##Deployment through docker compose##
+#   Deployment: 
+#     runs-on: label-2 #groot #runner
+#     needs: [Depchecktest, Image_Scanning_with_trivy] 
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Use Node.js
+#       uses: actions/setup-node@v3
 
-    - name: print the directory path and file content
-      run: |
-        pwd
-        git branch -a
-        git checkout devsecops
-        ls -a
+#     - name: print the directory path and file content
+#       run: |
+#         pwd
+#         git branch -a
+#         git checkout devsecops
+#         ls -a
 
-    - name: run the containers on deployment server
-      run: |
-          sudo docker-compose down
-          sudo docker-compose up -d --build
-          sudo docker ps
-          sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+#     - name: run the containers on deployment server
+#       run: |
+#           sudo docker-compose down
+#           sudo docker-compose up -d --build
+#           sudo docker ps
+#           sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
 
-##DAST##  
-  DAST_Scan:
-    runs-on: label-1
-    needs: Deployment
-    name: DAST
-    steps:
-      - name: ZAP Scan
-        run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
-      - name: copy report to runner work space
-        run: sudo cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
-      - name: Upload Test results 
-        uses: actions/upload-artifact@master
-        with:
-           name: ZAP report
-           path: /mnt/actions-runner/_work/zap-report/report.xml
+# ##DAST##  
+#   DAST_Scan:
+#     runs-on: label-1
+#     needs: Deployment
+#     name: DAST
+#     steps:
+#       - name: ZAP Scan
+#         run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
+#       - name: copy report to runner work space
+#         run: sudo cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
+#       - name: Upload Test results 
+#         uses: actions/upload-artifact@master
+#         with:
+#            name: ZAP report
+#            path: /mnt/actions-runner/_work/zap-report/report.xml
       
           
     # - name: install frontend dependencies
