@@ -1,10 +1,10 @@
-on:
-  push:
-    branches:
-      - saurabh
-  pull_request:
-    branches:
-      - saurabh
+# on:
+#   push:
+#     branches:
+#       - saurabh
+#   pull_request:
+#     branches:
+#       - saurabh
 jobs:
   semgrep:
     # User definable name of this GitHub Actions job.
@@ -25,7 +25,7 @@ jobs:
       # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep ci --json --json-output=semgrep.json #semgrep ci
+      - run: semgrep ci  #semgrep ci --json --json-output=semgrep.json 
         #env:
           #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
     
