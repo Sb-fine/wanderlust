@@ -24,12 +24,12 @@ jobs:
       - name: Upload Test results-1
         uses: actions/upload-artifact@master
         with:
-           name: frontend report
+           name: image frontend report
            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportfront.txt
       - name: Upload Test results-2
         uses: actions/upload-artifact@master
         with:
-           name: backend report
+           name: imagebackend report
            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportbackend.txt
            
       
