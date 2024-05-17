@@ -6,7 +6,7 @@ on:
     branches:
       - saurabh
 jobs:
-  depchecktest:
+  image-scanning:
     runs-on: label-2
     name: image scanning
     steps:
