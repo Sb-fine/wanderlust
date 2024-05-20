@@ -1,10 +1,10 @@
-on:
-  push:
-    branches:
-      - saurabh
-  pull_request:
-    branches:
-      - saurabh
+# on:
+#   push:
+#     branches:
+#       - saurabh
+#   pull_request:
+#     branches:
+#       - saurabh
 jobs:
   depchecktest:
     runs-on: label-1
