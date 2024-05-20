@@ -1,10 +1,10 @@
-# on:
-#   push:
-#     branches:
-#       - saurabh
-#   pull_request:
-#     branches:
-#       - saurabh
+on:
+  push:
+    branches:
+      - saurabh
+  pull_request:
+    branches:
+      - saurabh
 jobs:
   semgrep:
     # User definable name of this GitHub Actions job.
