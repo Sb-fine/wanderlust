@@ -126,8 +126,9 @@ jobs:
 
 ##Dependency check:
   
-  depchecktest:
+  Dependency-Test:
     runs-on: label-1
+    needs: [build_push_image]
     name: depecheck_test
     steps:
       # - name: remove old repo
@@ -157,6 +158,7 @@ jobs:
 ## Docker Image Scanning through Trivy##
   Image_Scanning_with_trivy:
       runs-on: label-2
+      needs: [build_push_image]
       name: image scanning
       steps:
   
@@ -183,7 +185,7 @@ jobs:
            
   Deployment: 
     runs-on: label-2 #groot #runner
-    needs: [Depchecktest, Image_Scanning_with_trivy] 
+    needs: [Dependency-Test, Image_Scanning_with_trivy] 
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
