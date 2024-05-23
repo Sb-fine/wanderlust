@@ -2,10 +2,10 @@ name: deployment
 
 on:
   push:
-    branches: [ "devsecops" ]
+    branches: [ "main", "devsecops" ]
     
   pull_request:
-    branches: [ "devsecops" ]
+    branches: [ "main", "devsecops" ]
 
 jobs:
 
