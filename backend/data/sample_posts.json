@@ -3,14 +3,14 @@
     "_id": {
       "$oid": "653441167c11e03b70e9161b"
     },
-    "authorName": "John Doe",
-    "title": "A Journey Through the Marvelous Beaches of Maldives and a marvelous experience",
+    "authorName": "Sumit G.",
+    "title": "A Journey Through the Marvelous Beaches of 'Maldives' and a marvelous experience",
     "imageLink": "https://i.ibb.co/3z72vmc/clean-lake-mountains-range-trees-nature-4k.webp",
     "categories": ["Travel", "Beaches"],
     "description": "The Maldives is a tropical paradise known for its stunning beaches, crystal-clear waters, and vibrant marine life. In this journey, we explore the breathtaking beauty of the Maldives' beaches. From the white sands to the vibrant coral reefs, there's something for every traveler.The Maldives is a tropical paradise known for its stunning beaches, crystal-clear waters, and vibrant marine life. In this journey, we explore the breathtaking beauty of the Maldives' beaches. From the white sands to the vibrant coral reefs, there's something for every traveler.",
     "isFeaturedPost": true,
     "timeOfPost": {
-      "$date": "2023-11-24T14:33:21.700Z"
+      "$date": "2024-05-14T14:33:21.700Z"
     }
   },
   {
@@ -59,14 +59,14 @@
     "_id": {
       "$oid": "653441167c11e03b70e9161f"
     },
-    "authorName": "Ella Davis",
+    "authorName": "Saurabh B.",
     "title": "Serenity in Nature: Finding Peace Amidst Scenic Beauty",
     "imageLink": "https://i.ibb.co/d0g42nr/FPO-BOR-100-800x600.webp",
     "categories": ["Nature", "Scenic", "Tranquil"],
     "description": "Find solace and serenity in the heart of nature's most scenic landscapes. This journey takes you to tranquil forests, serene lakes, and picturesque countryside. Immerse yourself in the beauty of the natural world and experience true peace.",
     "isFeaturedPost": true,
     "timeOfPost": {
-      "$date": "2023-08-22T14:33:21.700Z"
+      "$date": "2024-05-13T14:33:21.700Z"
     }
   },
   {
@@ -137,6 +137,20 @@
     "isFeaturedPost": false,
     "timeOfPost": {
       "$date": "2023-07-22T14:33:21.700Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "653441167c11e03b70e91625"
+    },
+    "authorName": "Sankalp T.",
+    "title": "Kyoto of the West (Rurikoji Goju-no-to)",
+    "imageLink": "https://storage.googleapis.com/p_64187c91529751506337b4e8/3002eafd-d8d6-4970-9e4c-8682d80096a7/%E3%82%A2%E3%82%A4%E3%82%AD%E3%83%A3%E3%83%83%E3%83%81-01.webp",
+    "categories": ["Nature", "Forests", "Retreat"],
+    "description": "One highly-recommended spot is Rurikoji Temple Five-storied Pagoda, a symbol of Yamaguchi City and a national treasure with about 600 years of history. It is known as one of the three great pagodas of Japan for its beauty, and it was also highly acclaimed in the New York Times article as “stunning.” Located among lush nature of Kozan Park, this place offers a beautiful view each season—cherry blossom during spring and a snowscape during winter. It is currently undergoing a major restoration for the first time in about 70 years, and it has been scheduled to reappear around March 2026.",
+    "isFeaturedPost": true,
+    "timeOfPost": {
+      "$date": "2024-05-14T14:35:21.700Z"
     }
   }
 ]
