@@ -96,6 +96,8 @@ jobs:
 
 ##build and push docker images##
   build_push_image:
+    # this job won't run when the workflow is manually triggered
+    if: github.event_name != 'workflow_dispatch'
     runs-on: label-2 #runner
     needs: [Analyze_CQ, Semgrep-SAST]
     # env:
@@ -136,6 +138,8 @@ jobs:
 ##Dependency check:
   
   Dependency-Test:
+    # this job won't run when the workflow is manually triggered
+    if: github.event_name != 'workflow_dispatch'
     runs-on: label-1
     needs: [build_push_image]
     name: depecheck_test
@@ -166,6 +170,8 @@ jobs:
 
 ## Docker Image Scanning through Trivy##
   Image_Scanning_with_trivy:
+      # this job won't run when the workflow is manually triggered
+      if: github.event_name != 'workflow_dispatch'
       runs-on: label-2
       needs: [build_push_image]
       name: image scanning
@@ -218,6 +224,8 @@ jobs:
 
 ##DAST##  
   DAST_Scan:
+    # this job won't run when the workflow is manually triggered
+    if: github.event_name != 'workflow_dispatch'
     runs-on: label-1
     needs: Deployment
     name: DAST
