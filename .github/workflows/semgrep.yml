@@ -27,10 +27,10 @@ jobs:
       # Run the "semgrep ci" command on the command line of the docker image.
       - run: semgrep ci --json --json-output=/__w/wanderlust/wanderlust/semgrep.json  
     mountvolume:
-        runs-on: label-1
+       name: mounting volume
+       runs-on: label-1
         steps:
         
-         name: mounting volume
         - run: docker run -itdv /mnt/actions-runner/_work/semgrep-report:/__w/wanderlust/wanderlust semgrep/semgrep 
              #cp semgrep.json /mnt/actions-runner/_work #semgrep ci && pwd
         #env:
