@@ -31,7 +31,8 @@ jobs:
        runs-on: label-1
        steps:
           - name: mounting volume
-          - run: docker run -itdv /mnt/actions-runner/_work/semgrep-report:/__w/wanderlust/wanderlust semgrep/semgrep 
+            run: docker run -itdv /mnt/actions-runner/_work/semgrep-report:/__w/wanderlust/wanderlust semgrep/semgrep 
+             
              #cp semgrep.json /mnt/actions-runner/_work #semgrep ci && pwd
         #env:
           #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
