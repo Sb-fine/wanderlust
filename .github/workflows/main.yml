@@ -13,14 +13,10 @@ on:
 
   workflow_dispatch: # for triggering the specific job manually
     inputs:
-      trigger_deployment:
+      trigger_Deployment:
         description: 'Set to yes to trigger Deployment'
         required: true
         default: 'no' 
-        type: choice
-        options:
-        - Deployment
-        
 
 jobs:
 
@@ -200,7 +196,7 @@ jobs:
   Deployment: 
     runs-on: label-2 #groot #runner
     needs: [Dependency-Test, Image_Scanning_with_trivy] 
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.trigger_deployment == 'yes'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.trigger_Deployment == 'yes'
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
