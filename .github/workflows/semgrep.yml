@@ -25,14 +25,18 @@ jobs:
       # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep ci --json --json-output=/__w/wanderlust/wanderlust/semgrep.json  
-  mountvolume:
-       name: mounting volume
-       runs-on: label-1
-       steps:
-          - name: mounting volume
-            run: docker run -itdv /mnt/actions-runner/_work/semgrep-report:/__w/wanderlust/wanderlust semgrep/semgrep &&
-                 semgrep ci --json --json-output=/__w/wanderlust/wanderlust/semgrep.json 
+      - run: semgrep ci --json --json-output=/__w/wanderlust/wanderlust/semgrep.json 
+      - name: Upload Sast Test results 
+        uses: actions/upload-artifact@master
+        with:
+           name:  SAST report
+           path: /__w/wanderlust/wanderlust/semgrep.json 
+  # mountvolume:
+  #      name: mounting volume
+  #      runs-on: label-1
+  #      steps:
+  #         - name: mounting volume
+  #           run: docker run -itdv /mnt/actions-runner/_work/semgrep-report:/__w/wanderlust/wanderlust semgrep/semgrep 
              
              #cp semgrep.json /mnt/actions-runner/_work #semgrep ci && pwd
         #env:
