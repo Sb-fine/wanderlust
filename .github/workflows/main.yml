@@ -14,9 +14,13 @@ on:
   workflow_dispatch: # for triggering the specific job manually
     inputs:
       trigger_deployment:
-        description: 'Set to yes to trigger deployment'
-        required: false
+        description: 'Set to yes to trigger Deployment'
+        required: true
         default: 'no' 
+        type: choice
+        options:
+        - Deployment
+        
 
 jobs:
 
