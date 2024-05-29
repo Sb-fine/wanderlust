@@ -187,7 +187,7 @@ jobs:
            
   Deployment: 
     runs-on: label-2 #groot #runner
-    # needs: [Dependency-Test, Image_Scanning_with_trivy] 
+    needs: [build_push_image]
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
