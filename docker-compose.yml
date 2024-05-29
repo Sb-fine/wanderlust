@@ -12,7 +12,8 @@ services:
     container_name: backend
     # build: ./backend
     # image: sumitramchandra/wanderlust_backend:latest
-    image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }}
+    # image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }}
+    image: "${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${GITHUB_RUN_NUMBER}"
     env_file:
       - ./backend/.env.sample
     ports:
@@ -28,7 +29,8 @@ services:
     container_name: frontend
     # build: ./frontend
     # image: sumitramchandra/wanderlust_frontend:latest
-    image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }}
+    # image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }}
+    image: "${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${GITHUB_RUN_NUMBER}"
     ports:
       - "5173:5173"
     volumes:
