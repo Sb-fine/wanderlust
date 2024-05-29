@@ -2,10 +2,12 @@ name: deployment
 
 on:
   push:
-    branches: [ "main", "devsecops" ]
+    branches: 
+        - CU-86cvfpzcf_versioning
     
   pull_request:
-    branches: [ "main", "devsecops" ]
+    branches: 
+        - CU-86cvfpzcf_versioning
 
 jobs:
 
