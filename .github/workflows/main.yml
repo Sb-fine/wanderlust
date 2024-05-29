@@ -102,29 +102,44 @@ jobs:
       #   run: |
       #     export IMAGE_TAG=${{ github.run_id }}
       #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-      - name: remove older images
-        run: |
-          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
-      - name: Build Image
+      - name: Build and Push Backend Image
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
 
-          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
-          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ github.run_number }} .
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ github.run_number }}
           
-          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
-          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+
+      - name: Build and Push Frontend Image
+        run: |
+          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ github.run_number }} .
+          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ github.run_number }}
+          
+      # - name: remove older images
+      #   run: |
+      #     sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+      # - name: Build Image
+      #   run: |
+      #     docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+
+      #     # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+      #     # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
+      #     # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
+          
+      #     # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+      #     # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
+      #     # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
 
           
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }} .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }}
+      #     cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
+      #     sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }} .
+      #     sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }}
           
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }} .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }}
+      #     cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
+      #     sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }} .
+      #     sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }}
 
 ##Dependency check:
   
@@ -200,6 +215,9 @@ jobs:
         git checkout devsecops
         ls -a
 
+    - name: Export GitHub Run Number
+      run: echo "GITHUB_RUN_NUMBER=${{ github.run_number }}" >> .env
+        
     - name: run the containers on deployment server
       run: |
           sudo docker-compose down
