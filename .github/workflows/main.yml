@@ -105,34 +105,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set the TAG environment variable
+        run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
         
-      # - name: Set IMAGE_TAG variable
-      #   run: |
-      #     export IMAGE_TAG=${{ github.run_id }}
-      #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-      - name: remove older images
+      - name: Login to DockerHub
+        run: docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+        
+      - name: Build and Push Backend Image
         run: |
-          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
-      - name: Build Image
+          cd backend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
+
+      - name: Build and Push Frontend Image
         run: |
-          docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
-
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
-          
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
-
-          
-          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG} .
-          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${IMAGE_TAG}
-          
-          # cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          # sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG} .
-          # sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${IMAGE_TAG}
+          cd frontend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
 
 ##Dependency check:
   
@@ -165,7 +155,7 @@ jobs:
            name: Depcheck report back
            path: ${{github.workspace}}/backend/depcheckback.html  #dependency-check-report.html     
 
-## Docker Image Scanning through Trivy##
+  ## Docker Image Scanning through Trivy##
   Image_Scanning_with_trivy:
       runs-on: label-2
       needs: [build_push_image]
@@ -192,30 +182,43 @@ jobs:
          with:
            name: image backend report
            path: /home/ubuntu/actions-runner/_work/trivy-report/trivyreportbackend.txt
-           
+
+  ## Deployment through Docker Compose ##    
   Deployment: 
-    runs-on: label-2 #groot #runner
-    needs: [Dependency-Test, Image_Scanning_with_trivy] 
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.trigger_Deployment == 'yes'
+    runs-on: label-2 #runner
+    needs: [Dependency-Test, Image_Scanning_with_trivy]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: print the directory path and file content
-      run: |
-        pwd
-        git branch -a
-        git checkout devsecops
-        ls -a
+      - name: Use Node.js
+        uses: actions/setup-node@v3
 
-    - name: run the containers on deployment server
-      run: |
+      - name: Print the directory path and file content
+        run: |
+          pwd
+          git branch -a
+          # git checkout devsecops
+          ls -a
+
+      - name: Deploy the containers
+        env:
+          TAG: ${{ github.run_id }}
+        run: |
+          echo "TAG=${{ github.run_id }}" > .env
+          cat .env
           sudo docker-compose down
           sudo docker-compose up -d --build
           sudo docker ps
+      - name: Remove images from server 
+        run: |
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
+      - name: Import sample data to Database
+        run: |
           sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
-
+          
 ##DAST##  
   DAST_Scan:
     runs-on: label-1
