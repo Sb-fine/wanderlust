@@ -50,7 +50,7 @@ jobs:
         run: |
           pwd
           git branch -a
-          git checkout devsecops
+          # git checkout devsecops
           ls -a
 
       - name: Run the containers on deployment server
