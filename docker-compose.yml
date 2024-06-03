@@ -11,7 +11,7 @@ services:
   backend:
     container_name: backend
     # build: ./backend
-    image: sumitramchandra/wanderlust_backend:${TAG}
+    image: sumitramchandra/wanderlust_backend:${{ env.TAG }}
     # image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ secrets.IMAGE_TAG }}
     # image: "${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${GITHUB_RUN_NUMBER}"
     env_file:
@@ -28,7 +28,7 @@ services:
   frontend:
     container_name: frontend
     # build: ./frontend
-    image: sumitramchandra/wanderlust_frontend:${TAG}
+    image: sumitramchandra/wanderlust_frontend:${{ env.TAG }}
     # image: ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ secrets.IMAGE_TAG }}
     # image: "${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${GITHUB_RUN_NUMBER}"
     ports:
