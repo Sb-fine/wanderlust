@@ -55,10 +55,10 @@ jobs:
         run: |
           export TAG=${{ needs.build_push_image.outputs.TAG }}
           sudo docker-compose down
-          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
-          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
           sudo docker-compose up -d --build
           sudo docker ps
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
           sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
       
           
