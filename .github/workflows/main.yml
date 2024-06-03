@@ -3,14 +3,13 @@ name: deployment
 on:
   push:
     branches: 
-        - CU-86cvfpzcf_versioning
+      - CU-86cvfpzcf_versioning
     
   pull_request:
     branches: 
-        - CU-86cvfpzcf_versioning
+      - CU-86cvfpzcf_versioning
 
 jobs:
-##build and push docker images##
   build_push_image:
     runs-on: label-2 #runner
 
@@ -18,40 +17,43 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set the TAG environment variable
+        run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
       - name: Build and Push Backend Image
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
-
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/backend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:latest
-          
+          cd backend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
 
       - name: Build and Push Frontend Image
         run: |
-          cd /home/ubuntu/actions-runner/_work/wanderlust/wanderlust/frontend
-          sudo docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest .
-          sudo docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:latest
+          cd frontend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
           
-     
-           
-  Deployment: 
-    runs-on: label-2 #groot #runner
+  deployment: 
+    runs-on: label-2 #runner
     needs: [build_push_image]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: print the directory path and file content
-      run: |
-        pwd
-        git branch -a
-        git checkout devsecops
-        ls -a
+      - name: Use Node.js
+        uses: actions/setup-node@v3
 
-    - name: run the containers on deployment server
-      run: |
+      - name: Print the directory path and file content
+        run: |
+          pwd
+          git branch -a
+          git checkout devsecops
+          ls -a
+
+      - name: Run the containers on deployment server
+        run: |
+          export TAG=${{ needs.build_push_image.outputs.TAG }}
           sudo docker-compose down
           sudo docker-compose up -d --build
           sudo docker ps
