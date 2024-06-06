@@ -93,7 +93,21 @@ jobs:
           #SEMGREP_APP_TOKEN:7909fa1240589af3f88de655a6c9e341c4000146ab886e5be110e64d2a8d9703
     
          # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-
+         
+## Secret_scanning_for_Repo
+  secret_scanning_repo:
+      runs-on: label-1 
+      steps:
+      - name: Checkout repository
+        #working-directory: mnt/actions-runner/_work/wander/wanderlust
+        run: cd /mnt/actions-runner/_work/wander/wanderlust && pwd && sudo git pull https://github.com/Sb-fine/wanderlust.git 
+      - name: secret_scanning_repo
+        run: docker run  --rm --name=deepfence-secretscanner -v /var/run/docker.sock:/var/run/docker.sock quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0 --local string /mnt/actions-runner/_work/wander/wanderlust --output json > /mnt/actions-runner/_work/wander/deepfence_report/deepfence_repo.json
+      - name: Upload results of secret scanning for repo
+        uses: actions/upload-artifact@master
+        with:
+         name: secret_scanning_repo_report
+         path: /mnt/actions-runner/_work/wander/deepfence_report/deepfence_repo.json 
 
 ##build and push docker images##
   build_push_image:
@@ -123,22 +137,8 @@ jobs:
           cd frontend
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
-    
-    ## Secret scanning
-  secret_scanning_repo:
-      runs-on: label-1 
-      steps:
-      - name: Checkout repository
-        #working-directory: mnt/actions-runner/_work/wander/wanderlust
-        run: cd /mnt/actions-runner/_work/wander/wanderlust && pwd && sudo git pull https://github.com/Sb-fine/wanderlust.git 
-      - name: secret_scanning_repo
-        run: docker run  --rm --name=deepfence-secretscanner -v /var/run/docker.sock:/var/run/docker.sock quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0 --local string /mnt/actions-runner/_work/wander/wanderlust --output json > /mnt/actions-runner/_work/wander/deepfence_report/deepfence_repo.json
-      - name: Upload results of secret scanning for repo
-        uses: actions/upload-artifact@master
-        with:
-         name: secret_scanning_repo_report
-         path: /mnt/actions-runner/_work/wander/deepfence_report/deepfence_repo.json 
-  
+
+## Secret_Scanning_for_Container  
   secret_scanning_container:
       runs-on: label-2 
       needs: [build_push_image]
