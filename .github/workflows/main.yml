@@ -19,7 +19,6 @@ on:
   #       default: 'no' 
 
 jobs:
-
   Analyze_CQ:
     name: Analyze (${{ matrix.language }})
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
@@ -112,7 +111,7 @@ jobs:
 ##build and push docker images##
   build_push_image:
     runs-on: label-2 #runner
-    needs: [Analyze_CQ, Semgrep-SAST]
+    needs: [Analyze_CQ, Semgrep-SAST, secret_scanning_repo]
     # env:
     #   IMAGE_TAG: ${{ github.run_id }}
 
