@@ -163,12 +163,12 @@ jobs:
       steps:
   
        - name: frontend
-         run: trivy image sumitramchandra/wanderlust_frontend --output /mnt/report/trivyreportfront.txt
+         run: trivy image ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} --output /mnt/report/trivyreportfront.txt
        - name: copying report to runner workspace  
          run: sudo cp /mnt/report/trivyreportfront.txt /home/ubuntu/actions-runner/_work/trivy-report
 
        - name: backend
-         run: trivy image sumitramchandra/wanderlust_backend --output /mnt/report/trivyreportbackend.txt
+         run: trivy image ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }} --output /mnt/report/trivyreportbackend.txt
        - name: copying report to runner workspace  
          run: sudo cp /mnt/report/trivyreportbackend.txt /home/ubuntu/actions-runner/_work/trivy-report
                    
@@ -211,13 +211,16 @@ jobs:
           sudo docker-compose down
           sudo docker-compose up -d --build
           sudo docker ps
-      - name: Remove images from server 
-        run: |
-          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
-          sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
+          
       - name: Import sample data to Database
         run: |
           sudo docker exec mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+          
+      - name: Remove images from server 
+        run: |
+          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_backend:${{ env.TAG }}
+          sudo docker rmi -f ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }}
+      
           
 ##DAST##  
   DAST_Scan:
@@ -226,7 +229,7 @@ jobs:
     name: DAST
     steps:
       - name: ZAP Scan
-        run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://34.229.46.124:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
+        run: sudo bash /mnt/sec_tools/ZAP_2.15.0/zap.sh -cmd -quickurl http://54.174.222.89:5173 -quickout /mnt/sec_tools/ZAP_2.15.0/report.xml
       - name: copy report to runner work space
         run: sudo cp /mnt/sec_tools/ZAP_2.15.0/report.xml /mnt/actions-runner/_work/zap-report
       - name: Upload Test results 
