@@ -141,6 +141,7 @@ jobs:
   
   secret_scanning_container:
       runs-on: label-2 
+      needs: [build_push_image]
       steps:
       #for frontend
       - name: frontend_container_secret_scanning
