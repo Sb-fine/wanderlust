@@ -142,6 +142,8 @@ jobs:
       runs-on: label-2 
       needs: [build_push_image]
       steps:
+      - name: Set the TAG environment variable
+        run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
       #for frontend
       - name: frontend_container_secret_scanning
         run:  docker run  --rm --name=deepfence-secretscanner    -v /var/run/docker.sock:/var/run/docker.sock    quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0   -image-name sumitramchandra/wanderlust_frontend --output json > /home/ubuntu/actions-runner/_work/deepfence_report/frontend_deepfence.json
