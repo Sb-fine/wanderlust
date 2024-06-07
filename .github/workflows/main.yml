@@ -146,7 +146,7 @@ jobs:
         run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
       #for frontend
       - name: frontend_container_secret_scanning
-        run:  docker run  --rm --name=deepfence-secretscanner    -v /var/run/docker.sock:/var/run/docker.sock    quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0   -image-name sumitramchandra/wanderlust_frontend --output json > /home/ubuntu/actions-runner/_work/deepfence_report/frontend_deepfence.json
+        run:  docker run  --rm --name=deepfence-secretscanner    -v /var/run/docker.sock:/var/run/docker.sock    quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0   -image-name ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} --output json > /home/ubuntu/actions-runner/_work/deepfence_report/frontend_deepfence.json
       - name: Upload results of secret scanning for frontend
         uses: actions/upload-artifact@master
         with:
@@ -226,6 +226,9 @@ jobs:
     needs: [Dependency-Test, Image_Scanning_with_trivy]
 
     steps:
+      - name: Set the TAG environment variable
+        run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+        
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -240,11 +243,9 @@ jobs:
           ls -a
 
       - name: Deploy the containers
-        env:
-          TAG: ${{ github.run_id }}
+      #   env:
+      #     TAG: ${{ github.run_id }}
         run: |
-          echo "TAG=${{ github.run_id }}" > .env
-          cat .env
           sudo docker-compose down
           sudo docker-compose up -d --build
           sudo docker ps
