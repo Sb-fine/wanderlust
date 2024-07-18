@@ -138,9 +138,9 @@ jobs:
       - name: install dependencies
         run: sudo npm install
       - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/depcheckfront.html  --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/depcheckfront.html  --nvdApiKey 900c64d6-3873-4658-a5fc-23ff998e8b69
       - name: Depcheck backend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/backend/depcheckback.html --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/backend/depcheckback.html --nvdApiKey 900c64d6-3873-4658-a5fc-23ff998e8b69  
         
         
       - name: Upload Test results frontend 
