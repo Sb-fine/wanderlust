@@ -224,6 +224,7 @@ jobs:
   Deployment: 
     runs-on: label-2 #runner
     # needs: [Dependency-Test, Image_Scanning_with_trivy]
+    needs: [build_push_image]
 
     steps:
       - name: Set the TAG environment variable
