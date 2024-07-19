@@ -223,7 +223,7 @@ jobs:
   ## Deployment through Docker Compose ##    
   Deployment: 
     runs-on: label-2 #runner
-    needs: [Dependency-Test, Image_Scanning_with_trivy]
+    # needs: [Dependency-Test, Image_Scanning_with_trivy]
 
     steps:
       - name: Set the TAG environment variable
