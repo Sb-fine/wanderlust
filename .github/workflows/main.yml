@@ -146,7 +146,7 @@ jobs:
         run: echo "TAG=${GITHUB_RUN_ID}" >> $GITHUB_ENV
       #for frontend
       - name: frontend_container_secret_scanning
-        run:  docker run  --rm --name=deepfence-secretscanner    -v /var/run/docker.sock:/var/run/docker.sock    quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0   -image-name ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} --output json > /home/ubuntu/actions-runner/_work/deepfence_report/frontend_deepfence.json
+        run:  docker run  --rm --name=deepfence-secretscanner -v /var/run/docker.sock:/var/run/docker.sock quay.io/deepfenceio/deepfence_secret_scanner_ce:2.2.0 --image-name ${{ secrets.DOCKER_HUB_USERNAME }}/wanderlust_frontend:${{ env.TAG }} --output json > /home/ubuntu/actions-runner/_work/deepfence_report/frontend_deepfence.json
       - name: Upload results of secret scanning for frontend
         uses: actions/upload-artifact@master
         with:
@@ -175,7 +175,7 @@ jobs:
       - name: install dependencies
         run: sudo npm install
       - name: Depcheck frontend
-        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/depcheckfront.html  --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
+        run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/frontend/depcheckfront.html --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1
       - name: Depcheck backend
         run: sudo bash /mnt/sec_tools/dependency-check/bin/dependency-check.sh --scan /mnt/actions-runner/_work/wanderlust/wanderlust/backend/package.json --out /mnt/actions-runner/_work/wanderlust/wanderlust/backend/depcheckback.html --nvdApiKey 92d03fc0-5a98-46df-b9a8-6a8cee5971f1  
         
